@@ -1,17 +1,9 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 export default Component.extend({
-  tag: 'button',
-  name: 'button',
+  tagName: 'button',
   scroller: service(),
-  start: computed(function() {
-    return this.get('element').offsetTop;
-  }),
-  end: computed('target', function(){
-    return document.getElementById(this.get('target')).offsetTop;
-  }),
   click() {
-    this.get('scroller.scrollToX').perform(this.get('start'), this.get('end'), 100);
+    this.get('scroller.scrollToElementId').perform(this.get('target'), 1500, 'sin');
   }
 })

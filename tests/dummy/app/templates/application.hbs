@@ -3,7 +3,7 @@
 <div class="block">
 <h2 id="1">ONE</h2>
 {{#element-scroll target='2'}}two{{/element-scroll}}
-{{#element-scroll target='5'}}five{{/element-scroll}}
+<button onclick={{perform scroller.scrollToElementId '5' 1000 'sin'}}>five</button>
 </div>
 <div class="block">
 <h2 id="2">TWO</h2>
