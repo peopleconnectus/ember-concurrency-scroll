@@ -9,9 +9,9 @@ export default Component.extend({
     return this.get('element').offsetTop;
   }),
   end: computed('target', function(){
-    return this.get('target').offsetTop;
+    return document.getElementById(this.get('target')).offsetTop;
   }),
   click() {
-    this.get('scroller.scrollToX').perform(this.get('start'), this.get('end'), 1000);
+    this.get('scroller.scrollToX').perform(this.get('start'), this.get('end'), 100);
   }
 })

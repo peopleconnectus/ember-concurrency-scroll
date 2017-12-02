@@ -20,7 +20,6 @@ export default Service.extend({
         isTarget = true;
         console.log('HIT TARGET!')
       }
-      console.log('scrolling:', pos)
       yield timeout(delay);
     }
     this.get('scrollToX').cancelAll();
