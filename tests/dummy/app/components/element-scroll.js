@@ -1,14 +1,14 @@
 import Component from '@ember/component';
-let { compute } = '@ember/object';
+import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 export default Component.extend({
   tag: 'button',
   name: 'button',
   scroller: service(),
-  start: compute(function() {
+  start: computed(function() {
     return this.get('element').offsetTop;
   }),
-  end: compute('target', function(){
+  end: computed('target', function(){
     return this.get('target').offsetTop;
   }),
   click() {
