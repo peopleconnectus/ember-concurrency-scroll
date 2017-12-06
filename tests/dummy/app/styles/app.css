@@ -2,3 +2,9 @@
   dislay: block;
   height: 1000px;
 }
+#portal {
+  display: block;
+  overflow: scroll;
+  height: 100px;
+  outline: 1px solid black;
+}

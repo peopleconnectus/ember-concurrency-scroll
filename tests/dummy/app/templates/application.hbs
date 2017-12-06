@@ -1,21 +1,41 @@
 <h2 id="title">Welcome to Ember</h2>
 {{outlet}}
 <div class="block">
-<h2 id="1">ONE</h2>
-{{#element-scroll target='2'}}two{{/element-scroll}}
-<button onclick={{perform scroller.scrollToElementId '5' 1000 'sin'}}>five</button>
+  <h2 id="1">ONE</h2>
+  {{#element-scroll target='2'}}two{{/element-scroll}}
+  {{#element-scroll target='2' bounce=true}}two-one{{/element-scroll}}
 </div>
 <div class="block">
-<h2 id="2">TWO</h2>
-{{#element-scroll target='3'}}three{{/element-scroll}}
+  <h2 id="2">TWO</h2>
+  {{#element-scroll target='3'}}three{{/element-scroll}}
 </div>
 <div class="block">
-<h2 id="3">THREE</h2>
-{{#element-scroll target='4'}}four{{/element-scroll}}
+  <h2 id="3">THREE</h2>
+  {{#element-scroll target='4'}}four{{/element-scroll}}
 </div>
 <div class="block">
-<h2 id="4">FOUR</h2>
-{{#element-scroll target='5'}}five{{/element-scroll}}
+  <h2 id="4">FOUR</h2>
+  {{#element-scroll target='5'}}five{{/element-scroll}}
 </div>
-<h2 id="5">FIVE</h2>
+<div class="block">
+  <h2 id="5">FIVE</h2>
+  {{#element-scroll target='6'}}six{{/element-scroll}}
+  {{#element-scroll target='8' bounce=true}}eight-one{{/element-scroll}}
+</div>
+<button onclick={{perform scroller.scrollToElementId '7' (hash container='portal')}}>seven</button>
+<div id="portal">
+  <div class="block" >
+    <h2 id="6">SIX</h2>
+  </div>
+  <div class="block">
+    <h2 id="7">SEVEN</h2>
+  </div>
+  <div class="block">
+    <h2 id="8">EIGHT</h2>
+  </div>
+</div>
+<button onclick={{perform scroller.scrollToElementId '8' (hash container='portal')}}>eight</button>
+<button onclick={{perform scroller.scrollToElementId '6' (hash container='portal')}}>six</button>
 {{#element-scroll target='1'}}one{{/element-scroll}}
+<div class="block">
+</div>

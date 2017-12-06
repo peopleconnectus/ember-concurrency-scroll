@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "easing": "0.0.4",
-    "ember-cli-babel": "^6.6.0"
+    "ember-cli-babel": "^6.6.0",
+    "sinon": "^4.1.2"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
