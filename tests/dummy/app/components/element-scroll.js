@@ -13,14 +13,14 @@ export default Component.extend({
   click() {
     this.get('scroll').perform(this.get('target'), {
       duration: 1500,
-      type: 'sin'
+      easeType: 'sin'
     });
     let cancel = ()=> {
-      // console.log('cancel!', this.get('scroller.scrollToX.state'));
-      if (this.get('scroller.scrollToX.isRunning')) {
-        this.get('scroller.scrollToElementId').perform('1');
+      // console.log('cancel!', this.get('scroller.scrollTo.state'));
+      if (this.get('scroller.scrollTo.isRunning')) {
+        // this.get('scroller.scrollToElementId').perform('1');
       }
     };
-    this.$(document.body).one('click', cancel);
+    // this.$(document.body).one('click', cancel);
   }
 })

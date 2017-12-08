@@ -1,7 +1,8 @@
 # concurrency-scroll
 
-This README outlines the details of collaborating on this Ember addon.
+This addon provides a `scroller` service that leverages `ember-concurrency` tasks to manage window and element scrolling. By using `ember-concurrency`, you can perform a scroll task, then chain a follow up task or action afterwards. This can be very useful in situations where you need to scroll to an element that needs the user's attention, by scrolling first, then calling the user's attention with some sort of behavior like a modal or popover.
 
+The other benefit to using `ember-concurrency` is that the scrolling task can be cancelled at any point, either by calling another scroll task, or explictly cancelling it with cancelAll.
 ## Installation
 
 * `git clone <repository-url>` this repository

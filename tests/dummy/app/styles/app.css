@@ -1,6 +1,11 @@
 .block {
   dislay: block;
   height: 1000px;
+  width: 1000px;
+}
+.right {
+  display: inline-block;
+  float:right;
 }
 #portal {
   display: block;

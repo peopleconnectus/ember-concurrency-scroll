@@ -7,59 +7,130 @@ const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinuso
 
 export default Service.extend({
   scrollToElementId: task(function * (elementId, options = {}) {
-    let start = this.getDocumentTop();
-    let end = document && document.getElementById(elementId).offsetTop;
+    let element = document && document.getElementById(elementId);
+    let start = {
+      y: this.getDocumentScrollTop(),
+      x: this.getDocumentScrollLeft()
+    };
+    let end = {
+      y: element.offsetTop,
+      x: element.offsetLeft
+    };
     // if we're targeting a container, account for offset to start and end
     if (options.container) {
       let container = this.getContainer(options.container);
-      start = container.scrollTop;
-      end = end - container.offsetTop;
+      start.y = container.scrollTop;
+      end.y = end.y - container.offsetTop;
+      start.x = container.scrollLeft;
+      end.x = end.x - container.offsetLeft;
     }
-    yield this.get('scrollToX').perform(start, end, options);
+    yield this.get('scrollTo').perform(start, end, options);
   }),
 
   scrollToElement: task(function * (element, options = {}) {
-    let start = this.getDocumentTop();
-    let end = element.offsetTop;
+    let start = {
+      y: this.getDocumentScrollTop(),
+      x: this.getDocumentScrollLeft()
+    };
+    let end = {
+      y: element.offsetTop,
+      x: element.offsetLeft
+    };
     // if we're targeting a container, account for offset to start and end
     if (options.container) {
       let container = this.getContainer(options.container);
-      start = container.scrollTop;
-      end = end - container.offsetTop;
+      start.y = container.scrollTop;
+      end.y = end.y - container.offsetTop;
+      start.x = container.scrollLeft;
+      end.x = end.x - container.offsetLeft;
     }
-    yield this.get('scrollToX').perform(start, end, options);
+    yield this.get('scrollTo').perform(start, end, options);
   }),
 
   // start position, end position, duration in ms, easetype
-  scrollToX: task(function * (start, end, options = {}) {
-    console.log('scrollto ', start, end)
-    let easeType = options.type || 'sinusoidal';
-    let duration = options.duration || 1000;
+  scrollTo: task(function * (start, end, options = {}) {
+    let axis = options.axis || 'y';
     let container = options.container && this.getContainer(options.container) || window;
+    let easeType = options.easeType || 'sinusoidal';
+    let duration = options.duration || 1000;
     let scrollTo = this.getScrollTo(container);
+    let viewportHeight = container.innerHeight || container.clientHeight || document.documentElement.clientHeight;
+    let viewportWidth = container.innerWidth || container.clientWidth || document.documentElement.clientWidth;
+    let startX, startY, endX, endY;
+    if (typeof start === 'object') {
+      startX = start.x;
+      startY = start.y;
+      endX = end.x;
+      endY = end.y;
+      // if the end is within the viewport, we don't need to scroll that axis
+      if (start.x <= end.x && end.x <= viewportWidth) {
+        axis = 'y';
+      } else if (start.y <= end.y && end.y <= viewportHeight) {
+        axis = 'x';
+      } else {
+        axis = 'xy';
+      }
+    } else {
+      if (axis === 'y') {
+        startY = start;
+        endY = end;
+        startX = endX = container.scrollLeft || container.scrollX;
+      } else {
+        startX = start;
+        endX = end;
+        startY = endY = container.scrollTop || container.scrollY;
+      }
+    }
     assert(`"${options.type}" is not a valid easeType. It must be one of these options: ${easeTypes}`, easeTypes.indexOf(easeType) !== -1);
+    // x and y easing variables
     let index = 0,
       delay = duration * 0.001,
       steps = Math.ceil(duration * 0.1),
-      target = end - start,
+      targetY = endY - startY,
+      targetX = endX - startX,
+      offsetY = startY,
+      offsetX = startX,
+      dirY = 1,
+      dirX = 1,
       eases = Easing(steps, easeType);
+
+      if (startY > endY) {
+        targetY = startY - endY;
+        dirY = -1;
+      }
+
+      if (startX > endX) {
+        targetX = startX - endX;
+        dirX = -1;
+      }
+      // console.log(start, end, `tx:${targetX}, ty:${targetY}, ox:${offsetX}, oy:${offsetY}, ${axis}`)
     while (index < steps) {
-      scrollTo(0, ( eases[index] * target ) + start);
+      if (axis === 'x') {
+        // scroll x axis
+        scrollTo(( eases[index] * targetX * dirX) + offsetX, startY);
+      } else if (axis === 'xy' || axis === 'both'){
+        // scroll x and y axis
+        scrollTo(( eases[index] * targetX * dirX ) + offsetX, ( eases[index] * targetY * dirY) + offsetY);
+      } else {
+        // scroll y axis
+        scrollTo(startX, ( eases[index] * targetY * dirY) + offsetY);
+      }
       index++;
       yield timeout(delay);
     }
   }).keepLatest(),
 
   cancelAll() {
-    this.get('scrollToX').cancelAll();
+    this.get('scrollTo').cancelAll();
   },
 
   getScrollTo(container) {
     if (container === window) {
       return container.scrollTo;
     } else {
-      return (y, x) => {
-        container.scrollTop = x;
+      return (x, y) => {
+        container.scrollLeft = x;
+        container.scrollTop = y;
       };
     }
   },
@@ -73,8 +144,13 @@ export default Service.extend({
     }
   },
 
-  getDocumentTop() {
+  getDocumentScrollTop() {
     assert('document is not available', document);
     return document && document.documentElement.scrollTop || document && document.body.scrollTop || 0;
+  },
+
+  getDocumentScrollLeft() {
+    assert('document is not available', document);
+    return document && document.documentElement.scrollLeft || document && document.body.scrollLeft || 0;
   }
 });
