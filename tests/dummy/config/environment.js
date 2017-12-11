@@ -17,7 +17,9 @@ module.exports = function(environment) {
         Date: false
       }
     },
-
+    'ember-concurrency-scroll': {
+      padding: 0
+    },
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created

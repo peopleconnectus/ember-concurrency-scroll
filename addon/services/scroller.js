@@ -2,31 +2,38 @@ import Service from '@ember/service';
 import { assert } from '@ember/debug';
 import Easing from 'easing';
 import { task, timeout } from 'ember-concurrency';
+import config from 'ember-get-config';
 
 const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinusoidal', 'sin', 'circular', 'exponential'];
 
 export default Service.extend({
+  defaults: null,
+  init() {
+    this._super(...arguments);
+    let conf = config['ember-concurrency-scroll'] || {};
+    let padding = typeof conf.padding === 'undefined' ? 20 : conf.padding;
+    let ignoreViewport = typeof conf.ignoreViewport === 'undefined' ? true : conf.ignoreViewport;
+    let defaults = {
+      axis: conf.axis || 'y',
+      duration: conf.duration || 1000,
+      easeType: conf.easeType || 'sinusoidal',
+      ignoreViewport: ignoreViewport,
+      padding: {
+        x: padding && padding.x || padding,
+        y: padding && padding.y || padding
+      }
+    };
+    this.set('defaults', defaults)
+  },
+
+  // scroll to an element by id
   scrollToElementId: task(function * (elementId, options = {}) {
     let element = document && document.getElementById(elementId);
-    let start = {
-      y: this.getDocumentScrollTop(),
-      x: this.getDocumentScrollLeft()
-    };
-    let end = {
-      y: element.offsetTop,
-      x: element.offsetLeft
-    };
-    // if we're targeting a container, account for offset to start and end
-    if (options.container) {
-      let container = this.getContainer(options.container);
-      start.y = container.scrollTop;
-      end.y = end.y - container.offsetTop;
-      start.x = container.scrollLeft;
-      end.x = end.x - container.offsetLeft;
-    }
-    yield this.get('scrollTo').perform(start, end, options);
+    assert(`An element with the id: '${elementId}' could not be found in the DOM. Be sure to check that it has been rendered before attempting to scroll to it.`, element)
+    yield this.get('scrollToElement').perform(element, options);
   }),
 
+  // scroll to an element
   scrollToElement: task(function * (element, options = {}) {
     let start = {
       y: this.getDocumentScrollTop(),
@@ -49,23 +56,37 @@ export default Service.extend({
 
   // start position, end position, duration in ms, easetype
   scrollTo: task(function * (start, end, options = {}) {
-    let axis = options.axis || 'y';
+    let defaults = this.get('defaults');
+    let axis = options.axis || defaults.axis;
+    let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
     let container = options.container && this.getContainer(options.container) || window;
-    let easeType = options.easeType || 'sinusoidal';
-    let duration = options.duration || 1000;
+    let easeType = options.easeType || defaults.easeType;
+    let duration = options.duration || defaults.duration;
     let scrollTo = this.getScrollTo(container);
     let viewportHeight = container.innerHeight || container.clientHeight || document.documentElement.clientHeight;
     let viewportWidth = container.innerWidth || container.clientWidth || document.documentElement.clientWidth;
-    let startX, startY, endX, endY;
+    let startX, startY, endX, endY, paddingX,  paddingY;
+    if (options.padding) {
+      if (typeof options.padding === 'object') {
+        assert(`The padding option must have x and y properties`, typeof options.padding.x !== 'undefined' && typeof options.padding.y !== 'undefined');
+        paddingX = options.padding.x;
+        paddingY = options.padding.y;
+      }
+    } else {
+      paddingX = defaults.padding.x;
+      paddingY = defaults.padding.y;
+    }
     if (typeof start === 'object') {
+      assert(`The start argument must have x and y properties`, typeof start.x !== 'undefined' && typeof start.y !== 'undefined');
+      assert(`The end argument must have x and y properties`, typeof end.x !== 'undefined' && typeof end.y !== 'undefined');
       startX = start.x;
       startY = start.y;
       endX = end.x;
       endY = end.y;
       // if the end is within the viewport, we don't need to scroll that axis
-      if (start.x <= end.x && end.x <= viewportWidth) {
+      if (!ignoreViewport && start.x <= end.x && end.x <= viewportWidth) {
         axis = 'y';
-      } else if (start.y <= end.y && end.y <= viewportHeight) {
+      } else if (!ignoreViewport && start.y <= end.y && end.y <= viewportHeight) {
         axis = 'x';
       } else {
         axis = 'xy';
@@ -86,8 +107,8 @@ export default Service.extend({
     let index = 0,
       delay = duration * 0.001,
       steps = Math.ceil(duration * 0.1),
-      targetY = endY - startY,
-      targetX = endX - startX,
+      targetY = endY - startY - paddingY,
+      targetX = endX - startX - paddingX,
       offsetY = startY,
       offsetX = startX,
       dirY = 1,
@@ -95,15 +116,15 @@ export default Service.extend({
       eases = Easing(steps, easeType);
 
       if (startY > endY) {
-        targetY = startY - endY;
+        targetY = startY - endY + paddingY;
         dirY = -1;
       }
 
       if (startX > endX) {
-        targetX = startX - endX;
+        targetX = startX - endX + paddingX;
         dirX = -1;
       }
-      // console.log(start, end, `tx:${targetX}, ty:${targetY}, ox:${offsetX}, oy:${offsetY}, ${axis}`)
+    // Ember.Logger.log(start, end, `tx:${targetX}, ty:${targetY}, ox:${offsetX}, oy:${offsetY}, ${axis}`)
     while (index < steps) {
       if (axis === 'x') {
         // scroll x axis

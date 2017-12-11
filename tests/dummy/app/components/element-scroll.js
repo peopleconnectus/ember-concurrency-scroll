@@ -13,14 +13,16 @@ export default Component.extend({
   click() {
     this.get('scroll').perform(this.get('target'), {
       duration: 1500,
-      easeType: 'sin'
+      easeType: 'sin',
+      ignoreViewport: false
     });
-    let cancel = ()=> {
-      // console.log('cancel!', this.get('scroller.scrollTo.state'));
-      if (this.get('scroller.scrollTo.isRunning')) {
-        // this.get('scroller.scrollToElementId').perform('1');
-      }
-    };
-    // this.$(document.body).one('click', cancel);
+    // let cancel = ()=> {
+    //   // console.log('cancel!', this.get('scroller.scrollTo.state'));
+    //   if (this.get('scroller.scrollTo.isRunning')) {
+    //     // scroll back to element 1
+    //     this.get('scroller.scrollToElementId').perform('1');
+    //   }
+    // };
+    // // this.$(document.body).one('click', cancel);
   }
 })

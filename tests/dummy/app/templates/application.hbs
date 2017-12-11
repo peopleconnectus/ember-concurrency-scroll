@@ -6,6 +6,7 @@
   {{#element-scroll target='2' bounce=true}}two-one{{/element-scroll}}
   <button onclick={{perform scroller.scrollToElementId '1r' (hash axis='x')}}>right</button>
   <button onclick={{perform scroller.scrollToElementId 'eol'}}>eol</button>
+  <button onclick={{perform scroller.scrollToElementId '8' (hash container='portal')}}>eight</button>
   <h2 id="1r" class="right">ONE RIGHT</h2>
   <button class="right" onclick={{perform scroller.scrollToElementId '1' (hash axis='x')}}>one</button>
 </div>
