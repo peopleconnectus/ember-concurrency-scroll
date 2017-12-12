@@ -33,6 +33,10 @@ matrix:
   fast_finish: true
   allow_failures:
     - env: EMBER_TRY_SCENARIO=ember-canary
+  include:
+    addons: skip
+    env: mocha
+    script: npm run mocha
 
 before_install:
   - npm config set spin false
