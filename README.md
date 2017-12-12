@@ -12,13 +12,16 @@ The other benefit to using `ember-concurrency` is that the scrolling task can be
 Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport.
 
 ### `scroller.scrollTo(start, end, options)`
-Core task, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`
+Core task, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`. Start and end values can be either numeric (when we only want to scroll in one axis), OR they can be coordinate objects containing an x and y value ({x:0, y:0}).
 
 #### Options
-##### duration
-Scroll duration in milliseconds. Default is `1000ms`.
+##### duration _integer_
+Scroll duration in milliseconds. Default is `1000`.
 
-##### easeType
+##### padding _number_/_object_
+Adds an offset to the number of pixels above and to the left of the target element when scrolling. Can either be a number (used for both `x` and `y` values), or an object containing `x` and `y` values. Useful if you want to scroll using `scrollToElement`, but don't want to scroll to the exact position of the element. Can also be a negative value, to scroll past the target element position. Default is `20`.
+
+##### easeType _string_
 Easing type used in scroll. Default is `sinusoidal`.
 
 Easing options are available (via the [`node-easing` library](https://github.com/rook2pawn/node-easing)), but the default is a sinusoidal ease. The available easing types are:
@@ -33,6 +36,15 @@ Easing options are available (via the [`node-easing` library](https://github.com
 * `sinusoidal` (default)
 
 The number of ease steps are calculated using the scroll duration value (default is 1000ms), which results in an array of predefined easing steps used for the scrolling.
+
+##### axis _string_
+Determines the axis to scroll on, when the `start` and `end` values are numeric. Default is 'y'.
+
+##### ignoreViewport _boolean_
+Determines if the scrollTo task should scroll if the target position is already in the viewport. Default is `true`.
+
+##### container _string_/_element_
+A DOM element or id to target for scrolling. Allows you to scroll the contents of fixed size elements with overflow property set to scroll. See the example below for further explanation.
 
 ## Usage
 ```js
@@ -70,7 +82,7 @@ You can limit the scroll to a specific element, for instance, if you had a fixed
     yield this.get('scroller.scrollToElementId').perform('title', {container: 'contents'});
   })
 ```
-
+## Config
 The scroller defaults can be set in `config/environment.js`, allowing you to set the defaults for your entire app, rather than having to override every time you use the scroller.
 
 ```js
@@ -93,6 +105,7 @@ module.exports = function(environment) {
     }
   }
 ```
+
 ## Installation
 
 * `git clone <repository-url>` this repository
