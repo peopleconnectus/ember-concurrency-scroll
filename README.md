@@ -46,6 +46,9 @@ Determines if the scrollTo task should scroll if the target position is already 
 ##### container _string_/_element_
 A DOM element or id to target for scrolling. Allows you to scroll the contents of fixed size elements with overflow property set to scroll. See the example below for further explanation.
 
+### scroller.cancelAll()
+Cancels all scrolling tasks. Useful to interrupt scrolling if the user scrolls during a scrolling task.
+
 ## Usage
 ```js
 // example element-scroll component
