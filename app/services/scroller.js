@@ -1,1 +1,1 @@
-export { default } from 'concurrency-scroll/services/scroller';
+export { default } from 'ember-concurrency-scroll/services/scroller';
