@@ -23,9 +23,6 @@ moduleFor('service:scroller', 'Unit | Service | scroller', {
   afterEach() {
     service = null;
     resetScroll(window);
-  },
-  after() {
-    scrollToSpy.restore();
   }
 });
 

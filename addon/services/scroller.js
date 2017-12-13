@@ -64,6 +64,7 @@ export default Service.extend({
     let container = options.container && this.getContainer(options.container) || this.get('window');
     let easeType = options.easeType || defaults.easeType;
     let duration = options.duration || defaults.duration;
+    let scrollTo = this.getScrollTo(container);
     let viewportHeight = container.innerHeight || container.clientHeight || document.documentElement.clientHeight;
     let viewportWidth = container.innerWidth || container.clientWidth || document.documentElement.clientWidth;
     let startX, startY, endX, endY, paddingX,  paddingY;
@@ -129,13 +130,13 @@ export default Service.extend({
     while (index < steps) {
       if (axis === 'x') {
         // scroll x axis
-        this._scrollTo(container, ( eases[index] * targetX * dirX) + offsetX, startY);
+        scrollTo(( eases[index] * targetX * dirX) + offsetX, startY);
       } else if (axis === 'xy' || axis === 'both'){
         // scroll x and y axis
-        this._scrollTo(container, ( eases[index] * targetX * dirX ) + offsetX, ( eases[index] * targetY * dirY) + offsetY);
+        scrollTo(( eases[index] * targetX * dirX ) + offsetX, ( eases[index] * targetY * dirY) + offsetY);
       } else {
         // scroll y axis
-        this._scrollTo(container, startX, ( eases[index] * targetY * dirY) + offsetY);
+        scrollTo(startX, ( eases[index] * targetY * dirY) + offsetY);
       }
       index++;
       yield timeout(delay);
@@ -146,12 +147,14 @@ export default Service.extend({
     this.get('scrollTo').cancelAll();
   },
 
-  _scrollTo(container, x, y) {
-    if (container === window) {
-      container.scrollTo(x, y);
+  getScrollTo(container) {
+    if (container === this.get('window')) {
+      return container.scrollTo;
     } else {
-      container.scrollLeft = x;
-      container.scrollTop = y;
+      return (x, y) => {
+        container.scrollLeft = x;
+        container.scrollTop = y;
+      };
     }
   },
 
