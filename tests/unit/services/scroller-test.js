@@ -16,7 +16,6 @@ moduleFor('service:scroller', 'Unit | Service | scroller', {
   beforeEach() {
     mockWindow(this);
     window = lookupWindow(this);
-    // console.log(window.scrollTo)
     mockScroll(window);
     service = this.subject();
     scrollToSpy = window.scrollTo;
@@ -24,6 +23,9 @@ moduleFor('service:scroller', 'Unit | Service | scroller', {
   afterEach() {
     service = null;
     resetScroll(window);
+  },
+  after() {
+    scrollToSpy.restore();
   }
 });
 
