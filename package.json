@@ -6,12 +6,12 @@
     "ember-addon"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Jake Bixby",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/peopleconnectus/ember-concurrency-scroll.git",
   "scripts": {
     "build": "ember build",
     "start": "ember serve",
