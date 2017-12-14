@@ -65,7 +65,6 @@ export default Service.extend({
     let axis = options.axis || defaults.axis;
     let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
     let container = options.container && this.getContainer(options.container) || this.get('window') || window;
-    console.log(container)
     let easeType = options.easeType || defaults.easeType;
     let duration = options.duration || defaults.duration;
     let scrollTo = this.getScrollTo(container);
