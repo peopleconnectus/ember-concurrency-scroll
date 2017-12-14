@@ -6,15 +6,20 @@ This addon provides a `scroller` service that leverages `ember-concurrency` task
 
 The other benefit to using `ember-concurrency` is that the scrolling task can be cancelled at any point, either by calling another scroll task, or explicitly cancelling it with cancelAll.
 ## Features
-`ember-concurrency-scroll` offers three scrolling tasks via the `scroller service`:
-### `scroller.scrollToElementId(id, options)`
-  Primary use, allows you to scroll to a specific element by its `id` attribute.
+  `ember-concurrency-scroll` offers three scrolling tasks via the `scroller service`, two of which have functions that return a task, with accompanying task versions:
+### `scroller.scrollToElementId(id, options)` _(function)_
+  Primary use, allows you to scroll to a specific element by its `id` attribute. Returns an Ember Concurrency task.
+### `scroller.scrollToElementIdTask(id, options)` _(async function)_
+  Ember Concurrency task that version of `scrollToElementId`. Primary use, allows you to scroll to a specific element by its `id` attribute.
 
-### `scroller.scrollToElement(element, options)`
-Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport.
+### `scroller.scrollToElement(element, options)` _(function)_
+  Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport. Returns an Ember Concurrency task.
+
+### `scroller.scrollToElementTask(element, options)` _(async function)_
+  Ember Concurrency task that version of `scrollToElement`. Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport.
 
 ### `scroller.scrollTo(start, end, options)`
-Core task, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`. Start and end values can be either numeric (when we only want to scroll in one axis), OR they can be coordinate objects containing an x and y value ({x:0, y:0}).
+  Core task, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`. Start and end values can be either numeric (when we only want to scroll in one axis), OR they can be coordinate objects containing an x and y value ({x:0, y:0}).
 
 #### Options
 ##### duration _integer_
@@ -100,7 +105,8 @@ You can limit the scroll to a specific element, for instance, if you had a fixed
 
 You can also use the `perform` helper to call the tasks from inside a template, but it's not the recommended implementation so use at your own risk.
 ```hbs
-<button onclick={{perform scroller.scrollToElementIdTask 'myDiv' }}>My Div</button>
+// note that options can be passed using the hash helper
+<button onclick={{perform scroller.scrollToElementIdTask 'myDiv' (hash duration=2000)}}>My Div</button>
 ```
 
 ## Config
