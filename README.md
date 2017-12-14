@@ -62,7 +62,7 @@ export default Component.extend({
   scroller: service(),
   scroll: task(function *() {
     // It is recommended to wrap the scroller service task in component task to allow for cleanup if the component is destroyed mid task
-    yield this.get('scroller.scrollToElementId').perform(...arguments);
+    yield this.get('scroller').scrollToElementId(...arguments);
   }),
   click() {
     this.get('scroll').perform(this.get('target'), {
@@ -81,12 +81,28 @@ export default Component.extend({
 {{#element-scroll target="title"}}scroll to title{{/element-scroll}}
 ```
 You can limit the scroll to a specific element, for instance, if you had a fixed size container that you wanted to scroll to a specific element inside that container, you'd pass either the container id or the element as the `container` option. Note that if you do use the container option, it will only scroll inside the container, and the window will not scroll to the container element itself. You could solve this by first scrolling to the container, then scrolling to the element inside the container with the container option.
+```hbs
+<div id="contents">
+  <div id="bibliography">
+    ... stuff
+  </div>
+  <div id="title">
+    ... titles
+  </div>
+</div>
+```
 ```js
   scrollToContentsTitle : task(function *() {
-    yield this.get('scroller.scrollToElementId').perform('contents');
-    yield this.get('scroller.scrollToElementId').perform('title', {container: 'contents'});
+    yield this.get('scroller').scrollToElementId('contents');
+    yield this.get('scroller').scrollToElementId('title', {container: 'contents'});
   })
 ```
+
+You can also use the `perform` helper to call the tasks from inside a template, but it's not the recommended implementation so use at your own risk.
+```hbs
+<button onclick={{perform scroller.scrollToElementIdTask 'myDiv' }}>My Div</button>
+```
+
 ## Config
 The scroller defaults can be set in `config/environment.js`, allowing you to set the defaults for your entire app, rather than having to override every time you use the scroller.
 

@@ -5,9 +5,9 @@ export default Component.extend({
   tagName: 'button',
   scroller: service(),
   scroll: task(function *() {
-    yield this.get('scroller.scrollToElementId').perform(...arguments);
+    yield this.get('scroller').scrollToElementId(...arguments);
     if (this.get('bounce')){
-      yield this.get('scroller.scrollToElementId').perform('1');
+      yield this.get('scroller').scrollToElementId('1');
     }
   }),
   click() {

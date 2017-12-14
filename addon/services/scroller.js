@@ -35,8 +35,13 @@ export default Service.extend({
   scrollToElementId(elementId, options = {}) {
     let element = document && document.getElementById(elementId);
     assert(`An element with the id: '${elementId}' could not be found in the DOM. Be sure to check that it has been rendered before attempting to scroll to it.`, element)
-    return this.get('scrollToElement').perform(element, options);
+    return this.scrollToElement(element, options);
   },
+
+  // task version so you can use the perform helper
+  scrollToElementIdTask: task(function * () {
+    yield this.scrollToElementId(...arguments);
+  }),
 
   // scroll to an element
   scrollToElement(element, options = {}) {
@@ -58,6 +63,11 @@ export default Service.extend({
     }
     return this.get('scrollTo').perform(start, end, options);
   },
+
+  // task version so you can use the perform helper
+  scrollToElementTask: task(function * () {
+    yield this.scrollToElement(...arguments);
+  }),
 
   // start position, end position, duration in ms, easetype
   scrollTo: task(function * (start, end, options = {}) {
