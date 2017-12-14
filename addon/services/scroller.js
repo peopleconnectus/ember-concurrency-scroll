@@ -1,5 +1,7 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
+import { getOwner } from '@ember/application';
+import { computed } from '@ember/object';
 import Easing from 'easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
@@ -8,6 +10,9 @@ const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinuso
 
 export default Service.extend({
   defaults: null,
+  window: computed(function(){
+    return getOwner(this).lookup('service:window');
+  }),
   init() {
     this._super(...arguments);
     let conf = config['ember-concurrency-scroll'] || {};
@@ -59,7 +64,8 @@ export default Service.extend({
     let defaults = this.get('defaults');
     let axis = options.axis || defaults.axis;
     let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
-    let container = options.container && this.getContainer(options.container) || window;
+    let container = options.container && this.getContainer(options.container) || this.get('window') || window;
+    console.log(container)
     let easeType = options.easeType || defaults.easeType;
     let duration = options.duration || defaults.duration;
     let scrollTo = this.getScrollTo(container);
@@ -146,8 +152,10 @@ export default Service.extend({
   },
 
   getScrollTo(container) {
-    if (container === window) {
+    // if scrollTo is a function, it's most likely the window
+    if (typeof container.scrollTo === 'function') {
       return container.scrollTo;
+    // otherwise it's an element
     } else {
       return (x, y) => {
         container.scrollLeft = x;
