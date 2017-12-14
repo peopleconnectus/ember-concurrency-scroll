@@ -44,7 +44,7 @@ export default Service.extend({
   }),
 
   // scroll to an element
-  scrollToElement(element, options = {}) {
+  scrollToElement() {
     return this.get('scrollToElementTask').perform(...arguments);
   },
 
@@ -73,7 +73,7 @@ export default Service.extend({
   scrollTo() {
     return this.get('scrollToTask').perform(...arguments);
   },
-    
+
   // start position, end position, duration in ms, easetype
   scrollToTask: task(function * (start, end, options = {}) {
     let defaults = this.get('defaults');
