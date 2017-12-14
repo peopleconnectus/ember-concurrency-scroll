@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
+import { computed } from '@ember/object';
 import Easing from 'easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
@@ -9,7 +10,9 @@ const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinuso
 
 export default Service.extend({
   defaults: null,
-  window: service(),
+  window: computed(function(){
+    return getOwner(this).lookup('service:window');
+  }),
   init() {
     this._super(...arguments);
     let conf = config['ember-concurrency-scroll'] || {};
@@ -62,6 +65,7 @@ export default Service.extend({
     let axis = options.axis || defaults.axis;
     let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
     let container = options.container && this.getContainer(options.container) || this.get('window') || window;
+    console.log(container)
     let easeType = options.easeType || defaults.easeType;
     let duration = options.duration || defaults.duration;
     let scrollTo = this.getScrollTo(container);
