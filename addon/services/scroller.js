@@ -32,14 +32,14 @@ export default Service.extend({
   },
 
   // scroll to an element by id
-  scrollToElementId: task(function * (elementId, options = {}) {
+  scrollToElementId(elementId, options = {}) {
     let element = document && document.getElementById(elementId);
     assert(`An element with the id: '${elementId}' could not be found in the DOM. Be sure to check that it has been rendered before attempting to scroll to it.`, element)
-    yield this.get('scrollToElement').perform(element, options);
-  }),
+    return this.get('scrollToElement').perform(element, options);
+  },
 
   // scroll to an element
-  scrollToElement: task(function * (element, options = {}) {
+  scrollToElement(element, options = {}) {
     let start = {
       y: this.getDocumentScrollTop(),
       x: this.getDocumentScrollLeft()
@@ -56,8 +56,8 @@ export default Service.extend({
       start.x = container.scrollLeft;
       end.x = end.x - container.offsetLeft;
     }
-    yield this.get('scrollTo').perform(start, end, options);
-  }),
+    return this.get('scrollTo').perform(start, end, options);
+  },
 
   // start position, end position, duration in ms, easetype
   scrollTo: task(function * (start, end, options = {}) {
