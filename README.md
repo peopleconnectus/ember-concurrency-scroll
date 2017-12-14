@@ -6,15 +6,23 @@ This addon provides a `scroller` service that leverages `ember-concurrency` task
 
 The other benefit to using `ember-concurrency` is that the scrolling task can be cancelled at any point, either by calling another scroll task, or explicitly cancelling it with cancelAll.
 ## Features
-`ember-concurrency-scroll` offers three scrolling tasks via the `scroller service`:
-### `scroller.scrollToElementId(id, options)`
-  Primary use, allows you to scroll to a specific element by its `id` attribute.
+  `ember-concurrency-scroll` offers three scrolling tasks via the `scroller service`, two of which have functions that return a task, with accompanying task versions:
+### `scroller.scrollToElementId(id, options)` _(function)_
+  Primary use, allows you to scroll to a specific element by its `id` attribute. Returns an Ember Concurrency task.
+### `scroller.scrollToElementIdTask(id, options)` _(async function)_
+  Ember Concurrency task that version of `scrollToElementId`. Primary use, allows you to scroll to a specific element by its `id` attribute.
 
-### `scroller.scrollToElement(element, options)`
-Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport.
+### `scroller.scrollToElement(element, options)` _(function)_
+  Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport. Returns an Ember Concurrency task.
 
-### `scroller.scrollTo(start, end, options)`
-Core task, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`. Start and end values can be either numeric (when we only want to scroll in one axis), OR they can be coordinate objects containing an x and y value ({x:0, y:0}).
+### `scroller.scrollToElementTask(element, options)` _(async function)_
+  Ember Concurrency task version of `scrollToElement`. Allows you to scroll to an element by passing the element itself. Useful for components to scroll to themselves if they're out of the viewport.
+
+### `scroller.scrollTo(start, end, options)` _(function)_
+  Core function, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`. Start and end values can be either numeric (when we only want to scroll in one axis), OR they can be coordinate objects containing an x and y value ({x:0, y:0}). Returns an Ember Concurrency task.
+
+### `scroller.scrollToTask(start, end, options)` _(async function)_
+  Core task, handles actual scrolling via easing, calling `window.scrollTo` or setting the value via `element.scrollTop` and `element.scrollLeft`. Start and end values can be either numeric (when we only want to scroll in one axis), OR they can be coordinate objects containing an x and y value ({x:0, y:0}).
 
 #### Options
 ##### duration _integer_
@@ -52,6 +60,7 @@ A DOM element or id to target for scrolling. Allows you to scroll the contents o
 Cancels all scrolling tasks. Useful to interrupt scrolling if the user scrolls during a scrolling task.
 
 ## Usage
+
 ```js
 // example element-scroll component
 import Component from '@ember/component';
@@ -62,7 +71,7 @@ export default Component.extend({
   scroller: service(),
   scroll: task(function *() {
     // It is recommended to wrap the scroller service task in component task to allow for cleanup if the component is destroyed mid task
-    yield this.get('scroller.scrollToElementId').perform(...arguments);
+    yield this.get('scroller').scrollToElementId(...arguments);
   }),
   click() {
     this.get('scroll').perform(this.get('target'), {
@@ -80,13 +89,40 @@ export default Component.extend({
 // implementing the component
 {{#element-scroll target="title"}}scroll to title{{/element-scroll}}
 ```
+Here are some ways for calling the scrollTo task directly. Do note that it is recommended that you follow `ember-concurrency`'s guidelines in implementing these tasks in your code, as calling them anywhere without managing the concurrency may have unintended results (like double scrolling or scrolls cancelling immediately):
+```js
+// scroll on the y axis
+this.get('scroller').scrollTo(0, 1000);
+// scroll on the x axis
+this.get('scroller').scrollTo(0, 1000, { axis: 'x' });
+// scroll on both x and y
+this.get('scroller').scrollTo({ x: 0, y: 0}, { x: 1000, y: 1000});
+```
+
 You can limit the scroll to a specific element, for instance, if you had a fixed size container that you wanted to scroll to a specific element inside that container, you'd pass either the container id or the element as the `container` option. Note that if you do use the container option, it will only scroll inside the container, and the window will not scroll to the container element itself. You could solve this by first scrolling to the container, then scrolling to the element inside the container with the container option.
+```hbs
+<div id="contents">
+  <div id="bibliography">
+    ... stuff
+  </div>
+  <div id="title">
+    ... titles
+  </div>
+</div>
+```
 ```js
   scrollToContentsTitle : task(function *() {
-    yield this.get('scroller.scrollToElementId').perform('contents');
-    yield this.get('scroller.scrollToElementId').perform('title', {container: 'contents'});
+    yield this.get('scroller').scrollToElementId('contents');
+    yield this.get('scroller').scrollToElementId('title', {container: 'contents'});
   })
 ```
+
+You can also use the `perform` helper to call the tasks from inside a template, but it's not the recommended implementation so use at your own risk.
+```hbs
+// note that options can be passed using the hash helper
+<button onclick={{perform scroller.scrollToElementIdTask 'myDiv' (hash duration=2000)}}>My Div</button>
+```
+
 ## Config
 The scroller defaults can be set in `config/environment.js`, allowing you to set the defaults for your entire app, rather than having to override every time you use the scroller.
 

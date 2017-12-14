@@ -32,14 +32,24 @@ export default Service.extend({
   },
 
   // scroll to an element by id
-  scrollToElementId: task(function * (elementId, options = {}) {
+  scrollToElementId() {
+    return this.get('scrollToElementIdTask').perform(...arguments);
+  },
+
+  // task version so you can use the perform helper
+  scrollToElementIdTask: task(function * (elementId, options = {}) {
     let element = document && document.getElementById(elementId);
     assert(`An element with the id: '${elementId}' could not be found in the DOM. Be sure to check that it has been rendered before attempting to scroll to it.`, element)
-    yield this.get('scrollToElement').perform(element, options);
+    yield this.get('scrollToElementTask').perform(element, options);
   }),
 
   // scroll to an element
-  scrollToElement: task(function * (element, options = {}) {
+  scrollToElement(element, options = {}) {
+    return this.get('scrollToElementTask').perform(...arguments);
+  },
+
+  // task version so you can use the perform helper
+  scrollToElementTask: task(function * (element, options = {}) {
     let start = {
       y: this.getDocumentScrollTop(),
       x: this.getDocumentScrollLeft()
@@ -56,11 +66,16 @@ export default Service.extend({
       start.x = container.scrollLeft;
       end.x = end.x - container.offsetLeft;
     }
-    yield this.get('scrollTo').perform(start, end, options);
+    yield this.get('scrollToTask').perform(start, end, options);
   }),
 
+  // scroll to a position
+  scrollTo() {
+    return this.get('scrollToTask').perform(...arguments);
+  },
+    
   // start position, end position, duration in ms, easetype
-  scrollTo: task(function * (start, end, options = {}) {
+  scrollToTask: task(function * (start, end, options = {}) {
     let defaults = this.get('defaults');
     let axis = options.axis || defaults.axis;
     let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
