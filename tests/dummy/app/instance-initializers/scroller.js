@@ -1,4 +1,4 @@
-export function initialize( appInstance ) {
+export function initialize(appInstance) {
   appInstance.inject('controller', 'scroller', 'service:scroller');
 }
 

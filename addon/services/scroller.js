@@ -10,7 +10,7 @@ const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinuso
 
 export default Service.extend({
   defaults: null,
-  window: computed(function(){
+  window: computed(function() {
     return getOwner(this).lookup('service:window');
   }),
   init() {
@@ -28,7 +28,7 @@ export default Service.extend({
         y: padding && padding.y || padding
       }
     };
-    this.set('defaults', defaults)
+    this.set('defaults', defaults);
   },
 
   // scroll to an element by id
@@ -39,7 +39,7 @@ export default Service.extend({
   // task version so you can use the perform helper
   scrollToElementIdTask: task(function * (elementId, options = {}) {
     let element = document && document.getElementById(elementId);
-    assert(`An element with the id: '${elementId}' could not be found in the DOM. Be sure to check that it has been rendered before attempting to scroll to it.`, element)
+    assert(`An element with the id: '${elementId}' could not be found in the DOM. Be sure to check that it has been rendered before attempting to scroll to it.`, element);
     yield this.get('scrollToElementTask').perform(element, options);
   }),
 
@@ -88,7 +88,7 @@ export default Service.extend({
     let startX, startY, endX, endY, paddingX,  paddingY;
     if (options.padding) {
       if (typeof options.padding === 'object') {
-        assert(`The padding option must have x and y properties`, typeof options.padding.x !== 'undefined' && typeof options.padding.y !== 'undefined');
+        assert('The padding option must have x and y properties', typeof options.padding.x !== 'undefined' && typeof options.padding.y !== 'undefined');
         paddingX = options.padding.x;
         paddingY = options.padding.y;
       }
@@ -97,8 +97,8 @@ export default Service.extend({
       paddingY = defaults.padding.y;
     }
     if (typeof start === 'object') {
-      assert(`The start argument must have x and y properties`, typeof start.x !== 'undefined' && typeof start.y !== 'undefined');
-      assert(`The end argument must have x and y properties`, typeof end.x !== 'undefined' && typeof end.y !== 'undefined');
+      assert('The start argument must have x and y properties', typeof start.x !== 'undefined' && typeof start.y !== 'undefined');
+      assert('The end argument must have x and y properties', typeof end.x !== 'undefined' && typeof end.y !== 'undefined');
       startX = start.x;
       startY = start.y;
       endX = end.x;
@@ -111,16 +111,14 @@ export default Service.extend({
       } else {
         axis = 'xy';
       }
+    } else if (axis === 'y') {
+      startY = start;
+      endY = end;
+      startX = endX = container.scrollLeft || container.scrollX;
     } else {
-      if (axis === 'y') {
-        startY = start;
-        endY = end;
-        startX = endX = container.scrollLeft || container.scrollX;
-      } else {
-        startX = start;
-        endX = end;
-        startY = endY = container.scrollTop || container.scrollY;
-      }
+      startX = start;
+      endX = end;
+      startY = endY = container.scrollTop || container.scrollY;
     }
     assert(`"${options.type}" is not a valid easeType. It must be one of these options: ${easeTypes}`, easeTypes.indexOf(easeType) !== -1);
     // x and y easing variables
@@ -135,26 +133,26 @@ export default Service.extend({
       dirX = 1,
       eases = Easing(steps, easeType);
 
-      if (startY > endY) {
-        targetY = startY - endY + paddingY;
-        dirY = -1;
-      }
+    if (startY > endY) {
+      targetY = startY - endY + paddingY;
+      dirY = -1;
+    }
 
-      if (startX > endX) {
-        targetX = startX - endX + paddingX;
-        dirX = -1;
-      }
+    if (startX > endX) {
+      targetX = startX - endX + paddingX;
+      dirX = -1;
+    }
     // Ember.Logger.log(start, end, `tx:${targetX}, ty:${targetY}, ox:${offsetX}, oy:${offsetY}, ${axis}`)
     while (index < steps) {
       if (axis === 'x') {
         // scroll x axis
-        scrollTo(( eases[index] * targetX * dirX) + offsetX, startY);
-      } else if (axis === 'xy' || axis === 'both'){
+        scrollTo(eases[index] * targetX * dirX + offsetX, startY);
+      } else if (axis === 'xy' || axis === 'both') {
         // scroll x and y axis
-        scrollTo(( eases[index] * targetX * dirX ) + offsetX, ( eases[index] * targetY * dirY) + offsetY);
+        scrollTo(eases[index] * targetX * dirX  + offsetX,  eases[index] * targetY * dirY + offsetY);
       } else {
         // scroll y axis
-        scrollTo(startX, ( eases[index] * targetY * dirY) + offsetY);
+        scrollTo(startX,  eases[index] * targetY * dirY + offsetY);
       }
       index++;
       yield timeout(delay);
