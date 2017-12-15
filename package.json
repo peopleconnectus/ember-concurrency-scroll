@@ -58,6 +58,9 @@
     "mocha": "^4.0.1",
     "request": "^2.83.0"
   },
+  "peerDependencies": {
+    "ember-cli-cjs-transform": "^1.0.0"
+  },
   "optionalDependencies": {
     "ember-window-mock": "^0.1.6"
   },
