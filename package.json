@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "A service to manage window and element scrolling using ember-concurrency.",
   "keywords": [
+    "easing",
     "ember-addon"
   ],
   "license": "MIT",
