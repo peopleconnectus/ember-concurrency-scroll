@@ -9,10 +9,10 @@ import config from 'ember-get-config';
 const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinusoidal', 'sin', 'circular', 'exponential'];
 
 export default Service.extend({
-  defaults: null,
   window: computed(function() {
     return getOwner(this).lookup('service:window');
   }),
+
   init() {
     this._super(...arguments);
     let conf = config['ember-concurrency-scroll'] || {};
