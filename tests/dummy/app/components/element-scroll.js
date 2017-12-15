@@ -6,7 +6,7 @@ export default Component.extend({
   scroller: service(),
   scroll: task(function *() {
     yield this.get('scroller').scrollToElementId(...arguments);
-    if (this.get('bounce')){
+    if (this.get('bounce')) {
       yield this.get('scroller').scrollToElementId('1');
     }
   }),
@@ -25,4 +25,4 @@ export default Component.extend({
     // };
     // // this.$(document.body).one('click', cancel);
   }
-})
+});
