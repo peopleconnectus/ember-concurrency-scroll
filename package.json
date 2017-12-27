@@ -52,7 +52,7 @@
     "ember-source": "~2.17.0",
     "ember-window-mock": "^0.1.6",
     "eslint-config-peopleconnect": "^1.0.0",
-    "eslint-config-peopleconnect-ember": "^2.0.0",
+    "eslint-config-peopleconnect-ember": "^2.0.1",
     "eslint-config-sane": "^0.4.2",
     "eslint-plugin-ember": "^5.0.1",
     "eslint-plugin-hbs": "^0.1.1",
