@@ -51,7 +51,6 @@
     "ember-resolver": "^4.0.0",
     "ember-sinon": "^1.0.1",
     "ember-source": "~2.18.0",
-    "ember-window-mock": "^0.2.0",
     "eslint-config-peopleconnect": "^1.0.0",
     "eslint-config-peopleconnect-ember": "^2.0.1",
     "eslint-config-sane": "^0.4.2",
