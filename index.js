@@ -1,4 +1,3 @@
-/* eslint-env node */
 'use strict';
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
     this._super.included.apply(this, arguments);
     this.import('node_modules/easing/index.js', {
       using: [
-        { transformation: 'cjs', as: 'easing'}
+        { transformation: 'cjs', as: 'easing' }
       ]
     });
   }
