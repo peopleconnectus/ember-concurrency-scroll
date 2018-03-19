@@ -4,30 +4,13 @@ import sinon from 'sinon';
 
 let scrollToSpy, service, window;
 
-function mockScroll(window) {
-  return window.scrollTo = sinon.spy();
-}
-
-function resetScroll(window) {
-  window.scrollTo.reset();
-}
-
 moduleFor('service:scroller', 'Unit | Service | scroller', {
   beforeEach() {
     mockWindow(this);
     window = lookupWindow(this);
-    mockScroll(window);
+    window.scrollTo = scrollToSpy = sinon.spy();
     service = this.subject();
-    scrollToSpy = window.scrollTo;
-  },
-  afterEach() {
-    service = null;
-    resetScroll(window);
   }
-});
-
-test('it exists', function(assert) {
-  assert.ok(service);
 });
 
 test('scrollTo calls window.scrollTo', async function(assert) {
