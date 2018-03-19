@@ -1,15 +1,18 @@
 import { moduleFor, test } from 'ember-qunit';
-import { mockWindow, lookupWindow } from 'ember-window-mock';
+import window, { reset } from 'ember-window-mock';
 import sinon from 'sinon';
 
-let scrollToSpy, service, window;
+let scrollToSpy, service;
 
 moduleFor('service:scroller', 'Unit | Service | scroller', {
   beforeEach() {
-    mockWindow(this);
-    window = lookupWindow(this);
     window.scrollTo = scrollToSpy = sinon.spy();
-    service = this.subject();
+    service = this.subject({
+      window
+    });
+  },
+  afterEach() {
+    reset(window);
   }
 });
 

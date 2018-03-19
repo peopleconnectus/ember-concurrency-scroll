@@ -1,7 +1,5 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import { getOwner } from '@ember/application';
-import { computed } from '@ember/object';
 import Easing from 'easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
@@ -9,9 +7,8 @@ import config from 'ember-get-config';
 const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinusoidal', 'sin', 'circular', 'exponential'];
 
 export default Service.extend({
-  window: computed(function() {
-    return getOwner(this).lookup('service:window') || window;
-  }),
+  // consumer can inject their own
+  window,
 
   init() {
     this._super(...arguments);
