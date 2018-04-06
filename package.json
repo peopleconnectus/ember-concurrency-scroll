@@ -25,6 +25,7 @@
     "ember-cli-babel": "^6.6.0",
     "ember-concurrency": "^0.8.10",
     "ember-get-config": "^0.2.4",
+    "ember-window-mock": "^0.3.0",
     "pkg-conf": "^2.0.0"
   },
   "devDependencies": {
@@ -51,7 +52,6 @@
     "ember-resolver": "^4.0.0",
     "ember-sinon": "^1.0.1",
     "ember-source": "~2.18.0",
-    "ember-window-mock": "^0.3.0",
     "eslint-config-peopleconnect": "^2.0.1",
     "eslint-config-peopleconnect-ember": "^3.0.1",
     "eslint-config-sane": "^0.5.0",

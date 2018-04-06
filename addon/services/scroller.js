@@ -3,13 +3,11 @@ import { assert } from '@ember/debug';
 import Easing from 'easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
+import window from 'ember-window-mock';
 
 const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinusoidal', 'sin', 'circular', 'exponential'];
 
 export default Service.extend({
-  // consumer can inject their own
-  window,
-
   init() {
     this._super(...arguments);
     let conf = config['ember-concurrency-scroll'] || {};
@@ -76,7 +74,7 @@ export default Service.extend({
     let defaults = this.get('defaults');
     let axis = options.axis || defaults.axis;
     let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
-    let container = options.container && this.getContainer(options.container) || this.get('window');
+    let container = options.container && this.getContainer(options.container) || window;
     let easeType = options.easeType || defaults.easeType;
     let duration = options.duration || defaults.duration;
     let scrollTo = this.getScrollTo(container);
