@@ -10,7 +10,7 @@ const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinuso
 
 export default Service.extend({
   window: computed(function() {
-    return getOwner(this).lookup('service:window');
+    return getOwner(this).lookup('service:window') || window;
   }),
 
   init() {
@@ -79,7 +79,7 @@ export default Service.extend({
     let defaults = this.get('defaults');
     let axis = options.axis || defaults.axis;
     let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
-    let container = options.container && this.getContainer(options.container) || this.get('window') || window;
+    let container = options.container && this.getContainer(options.container) || this.get('window');
     let easeType = options.easeType || defaults.easeType;
     let duration = options.duration || defaults.duration;
     let scrollTo = this.getScrollTo(container);
