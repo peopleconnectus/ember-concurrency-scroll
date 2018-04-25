@@ -17,7 +17,8 @@
     "build": "ember build",
     "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
     "start": "ember serve",
-    "test": "ember try:each",
+    "test": "ember test",
+    "test:all": "ember try:each",
     "mocha": "cross-env DEBUG=ember-cli-addon-tests mocha"
   },
   "dependencies": {
@@ -34,7 +35,7 @@
     "cross-env": "^5.1.1",
     "denodeify": "^1.2.1",
     "ember-ajax": "^3.0.0",
-    "ember-cli": "~3.0.4",
+    "ember-cli": "~3.1.2",
     "ember-cli-addon-tests": "^0.11.0",
     "ember-cli-cjs-transform": "^1.0.0",
     "ember-cli-dependency-checker": "^2.0.0",
