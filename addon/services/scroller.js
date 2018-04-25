@@ -4,6 +4,7 @@ import Easing from 'easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
 import window from 'ember-window-mock';
+import { assign } from '@ember/polyfills';
 
 const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinusoidal', 'sin', 'circular', 'exponential'];
 
@@ -71,25 +72,20 @@ export default Service.extend({
 
   // start position, end position, duration in ms, easetype
   scrollToTask: task(function * (start, end, options = {}) {
-    let defaults = this.get('defaults');
-    let axis = options.axis || defaults.axis;
-    let ignoreViewport = typeof options.ignoreViewport !== 'undefined' ? options.ignoreViewport : defaults.ignoreViewport;
+    options = assign({}, this.get('defaults'), options);
+    let axis = options.axis;
+    let ignoreViewport = options.ignoreViewport;
     let container = options.container && this.getContainer(options.container) || window;
-    let easeType = options.easeType || defaults.easeType;
-    let duration = options.duration || defaults.duration;
+    let easeType = options.easeType;
+    let duration = options.duration;
     let scrollTo = this.getScrollTo(container);
     let viewportHeight = container.innerHeight || container.clientHeight || document.documentElement.clientHeight;
     let viewportWidth = container.innerWidth || container.clientWidth || document.documentElement.clientWidth;
     let startX, startY, endX, endY, paddingX,  paddingY;
     if (options.padding) {
-      if (typeof options.padding === 'object') {
-        assert('The padding option must have x and y properties', typeof options.padding.x !== 'undefined' && typeof options.padding.y !== 'undefined');
-        paddingX = options.padding.x;
-        paddingY = options.padding.y;
-      }
-    } else {
-      paddingX = defaults.padding.x;
-      paddingY = defaults.padding.y;
+      assert('The padding option must have x and y properties', typeof options.padding.x !== 'undefined' && typeof options.padding.y !== 'undefined');
+      paddingX = options.padding.x;
+      paddingY = options.padding.y;
     }
     if (typeof start === 'object') {
       assert('The start argument must have x and y properties', typeof start.x !== 'undefined' && typeof start.y !== 'undefined');
