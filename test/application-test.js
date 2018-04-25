@@ -31,7 +31,7 @@ describe('Acceptance | Application', function() {
   it('doesn\'t break the build', function() {
     return request('http://localhost:49741/assets/vendor.js')
       .then(response => {
-      expect(response.body).to.contain('ember-concurrency-scroll');
-    });
+        expect(response.body).to.contain('ember-concurrency-scroll');
+      });
   });
 });
