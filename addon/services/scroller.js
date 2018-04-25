@@ -18,7 +18,7 @@ export default Service.extend({
       axis: conf.axis || 'y',
       duration: conf.duration || 1000,
       easeType: conf.easeType || 'sinusoidal',
-      ignoreViewport: ignoreViewport,
+      ignoreViewport,
       padding: {
         x: padding && padding.x || padding,
         y: padding && padding.y || padding
