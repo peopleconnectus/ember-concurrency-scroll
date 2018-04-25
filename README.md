@@ -4,7 +4,7 @@ ember-concurrency-scroll
 [![Build Status](https://travis-ci.org/peopleconnectus/ember-concurrency-scroll.svg?branch=master)](https://travis-ci.org/peopleconnectus/ember-concurrency-scroll)
 [![npm version](https://badge.fury.io/js/ember-concurrency-scroll.svg)](https://badge.fury.io/js/ember-concurrency-scroll)
 
-This addon provides a `scroller` service that leverages `ember-concurrency` tasks to manage window and element scrolling. By using `ember-concurrency`, you can perform a scroll task, then chain a follow up task or action afterwards. This can be very useful in situations where you need to scroll to an element that needs the user's attention, by scrolling first, then calling the user's attention with some sort of behavior like a modal or popover.
+This addon provides a `scroller` service that leverages [ember-concurrency](http://ember-concurrency.com/) tasks to manage window and element scrolling. By using `ember-concurrency`, you can perform a scroll task, then chain a follow up task or action afterwards. This can be very useful in situations where you need to scroll to an element that needs the user's attention, by scrolling first, then calling the user's attention with some sort of behavior like a modal or popover.
 
 The other benefit to using `ember-concurrency` is that the scrolling task can be cancelled at any point, either by calling another scroll task, or explicitly cancelling it with cancelAll.
 
