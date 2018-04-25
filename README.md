@@ -1,10 +1,24 @@
-# ember-concurrency-scroll
+ember-concurrency-scroll
+==============================================================================
+
 [![Build Status](https://travis-ci.org/peopleconnectus/ember-concurrency-scroll.svg?branch=master)](https://travis-ci.org/peopleconnectus/ember-concurrency-scroll)
 [![npm version](https://badge.fury.io/js/ember-concurrency-scroll.svg)](https://badge.fury.io/js/ember-concurrency-scroll)
 
 This addon provides a `scroller` service that leverages `ember-concurrency` tasks to manage window and element scrolling. By using `ember-concurrency`, you can perform a scroll task, then chain a follow up task or action afterwards. This can be very useful in situations where you need to scroll to an element that needs the user's attention, by scrolling first, then calling the user's attention with some sort of behavior like a modal or popover.
 
 The other benefit to using `ember-concurrency` is that the scrolling task can be cancelled at any point, either by calling another scroll task, or explicitly cancelling it with cancelAll.
+
+Installation
+------------------------------------------------------------------------------
+
+```
+ember install ember-concurrency-scroll
+```
+
+
+Usage
+------------------------------------------------------------------------------
+
 ## Features
   `ember-concurrency-scroll` offers three scrolling tasks via the `scroller service`, two of which have functions that return a task, with accompanying task versions:
 ### `scroller.scrollToElementId(id, options)` _(function)_
@@ -147,25 +161,35 @@ module.exports = function(environment) {
   }
 ```
 
-## Installation
 
-* `git clone <repository-url>` this repository
+Contributing
+------------------------------------------------------------------------------
+
+### Installation
+
+* `git clone <repository-url>`
 * `cd ember-concurrency-scroll`
 * `npm install`
 
-## Running
+### Linting
+
+* `npm run lint:js`
+* `npm run lint:js -- --fix`
+
+### Running tests
+
+* `ember test` – Runs the test suite on the current Ember version
+* `ember test --server` – Runs the test suite in "watch mode"
+* `npm test` – Runs `ember try:each` to test your addon against multiple Ember versions
+
+### Running the dummy application
 
 * `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-## Running Tests
-
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
+* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
 For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+
+License
+------------------------------------------------------------------------------
+
+This project is licensed under the [MIT License](LICENSE.md).
