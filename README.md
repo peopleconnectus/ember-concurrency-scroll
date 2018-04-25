@@ -156,6 +156,12 @@ module.exports = function(environment) {
       padding: {
         x: 0,
         y: 0
+      },
+
+      // you can also set overrides which take preference over everything
+      // this is useful for testing purposes
+      // default is duration: 1 in testing mode
+      overrides: {
       }
     }
   }

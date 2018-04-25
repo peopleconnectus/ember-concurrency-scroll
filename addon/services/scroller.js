@@ -11,7 +11,7 @@ const easeTypes = ['linear', 'quadratic', 'cubic', 'quartic', 'quintic', 'sinuso
 export default Service.extend({
   init() {
     this._super(...arguments);
-    let conf = config['ember-concurrency-scroll'] || {};
+    let conf = config['ember-concurrency-scroll'];
     let padding = typeof conf.padding === 'undefined' ? 20 : conf.padding;
     let ignoreViewport = typeof conf.ignoreViewport === 'undefined' ? true : conf.ignoreViewport;
     let defaults = {
@@ -25,6 +25,7 @@ export default Service.extend({
       }
     };
     this.set('defaults', defaults);
+    this.set('overrides', conf.overrides);
   },
 
   // scroll to an element by id
@@ -72,7 +73,7 @@ export default Service.extend({
 
   // start position, end position, duration in ms, easetype
   scrollToTask: task(function * (start, end, options = {}) {
-    options = assign({}, this.get('defaults'), options);
+    options = assign({}, this.get('defaults'), options, this.get('overrides'));
     let axis = options.axis;
     let ignoreViewport = options.ignoreViewport;
     let container = options.container && this.getContainer(options.container) || window;
