@@ -51,17 +51,23 @@ export default Service.extend({
       y: this.getDocumentScrollTop(),
       x: this.getDocumentScrollLeft()
     };
-    let end = {
-      y: element.offsetTop,
-      x: element.offsetLeft
-    };
+    let end;
     // if we're targeting a container, account for offset to start and end
     if (options.container) {
+      end = {
+        y: element.offsetTop,
+        x: element.offsetLeft
+      };
       let container = this.getContainer(options.container);
       start.y = container.scrollTop;
       end.y = end.y - container.offsetTop;
       start.x = container.scrollLeft;
       end.x = end.x - container.offsetLeft;
+    } else {
+      end = {
+        y: window.pageYOffset + element.getBoundingClientRect().top,
+        x: window.pageXOffset + element.getBoundingClientRect().left
+      };
     }
     yield this.get('scrollToTask').perform(start, end, options);
   }),
