@@ -2,36 +2,36 @@
 {{outlet}}
 <div class="block">
   <h2 id="1">ONE</h2>
-  {{#element-scroll target='2'}}two{{/element-scroll}}
-  {{#element-scroll target='2' bounce=true}}two-one{{/element-scroll}}
-  <button onclick={{perform scroller.scrollToElementIdTask '1r' (hash axis='x')}}>right</button>
-  <button onclick={{perform scroller.scrollToElementIdTask 'eol'}}>eol</button>
-  <button onclick={{perform scroller.scrollToElementIdTask '8' (hash container='portal')}}>eight</button>
+  {{#element-scroll target="2"}}two{{/element-scroll}}
+  {{#element-scroll target="2" bounce=true}}two-one{{/element-scroll}}
+  <button onclick={{perform scroller.scrollToElementIdTask "1r" (hash axis="x")}}>right</button>
+  <button onclick={{perform scroller.scrollToElementIdTask "eol"}}>eol</button>
+  <button onclick={{perform scroller.scrollToElementIdTask "8" (hash container="portal")}}>eight</button>
   <h2 id="1r" class="right">ONE RIGHT</h2>
-  <button class="right" onclick={{perform scroller.scrollToElementIdTask '1' (hash axis='x')}}>one</button>
+  <button class="right" onclick={{perform scroller.scrollToElementIdTask "1" (hash axis="x")}}>one</button>
 </div>
 <div class="block">
   <h2 id="2">TWO</h2>
-  {{#element-scroll target='3'}}three{{/element-scroll}}
-  {{#element-scroll target='1'}}one{{/element-scroll}}
+  {{#element-scroll target="3"}}three{{/element-scroll}}
+  {{#element-scroll target="1"}}one{{/element-scroll}}
 </div>
 <div class="block">
   <h2 id="3">THREE</h2>
-  {{#element-scroll target='4'}}four{{/element-scroll}}
-  {{#element-scroll target='2'}}two{{/element-scroll}}
+  {{#element-scroll target="4"}}four{{/element-scroll}}
+  {{#element-scroll target="2"}}two{{/element-scroll}}
 </div>
 <div class="block">
   <h2 id="4">FOUR</h2>
-  {{#element-scroll target='5'}}five{{/element-scroll}}
-  {{#element-scroll target='3'}}three{{/element-scroll}}
+  {{#element-scroll target="5"}}five{{/element-scroll}}
+  {{#element-scroll target="3"}}three{{/element-scroll}}
 </div>
 <div class="block">
   <h2 id="5">FIVE</h2>
-  {{#element-scroll target='6'}}six{{/element-scroll}}
-  {{#element-scroll target='4'}}four{{/element-scroll}}
-  {{#element-scroll target='8' bounce=true}}eight-one{{/element-scroll}}
+  {{#element-scroll target="6"}}six{{/element-scroll}}
+  {{#element-scroll target="4"}}four{{/element-scroll}}
+  {{#element-scroll target="8" bounce=true}}eight-one{{/element-scroll}}
 </div>
-<button onclick={{perform scroller.scrollToElementIdTask '7' (hash container='portal')}}>seven</button>
+<button onclick={{perform scroller.scrollToElementIdTask "7" (hash container="portal")}}>seven</button>
 <div id="portal">
   <div class="block" >
     <h2 id="6">SIX</h2>
@@ -44,11 +44,11 @@
     <h2 id="8r" class="right">EIGHT RIGHT</h2>
   </div>
 </div>
-<button onclick={{perform scroller.scrollToElementIdTask '8' (hash container='portal')}}>eight</button>
-<button onclick={{perform scroller.scrollToElementIdTask '8r' (hash container='portal')}}>eight right</button>
-<button onclick={{perform scroller.scrollToElementIdTask '6' (hash container='portal')}}>six</button>
-{{#element-scroll target='1'}}one{{/element-scroll}}
+<button onclick={{perform scroller.scrollToElementIdTask "8" (hash container="portal")}}>eight</button>
+<button onclick={{perform scroller.scrollToElementIdTask "8r" (hash container="portal")}}>eight right</button>
+<button onclick={{perform scroller.scrollToElementIdTask "6" (hash container="portal")}}>six</button>
+{{#element-scroll target="1"}}one{{/element-scroll}}
 <div class="block">
   <h2 class="right" id="eol">end of line</h2>
-  <button class="right" onclick={{perform scroller.scrollToElementIdTask '1' (hash axis='x')}}>one</button>
+  <button class="right" onclick={{perform scroller.scrollToElementIdTask "1" (hash axis="x")}}>one</button>
 </div>
