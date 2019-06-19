@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import Easing from 'easing';
+import Easing from 'easing/browser-easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
 import window from 'ember-window-mock';
