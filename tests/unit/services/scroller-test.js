@@ -6,7 +6,8 @@ import sinon from 'sinon';
 module('Unit | Service | scroller', function(hooks) {
   setupTest(hooks);
 
-  let scrollToSpy, service;
+  let scrollToSpy;
+  let service;
 
   hooks.beforeEach(function() {
     window.scrollTo = scrollToSpy = sinon.spy();

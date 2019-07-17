@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { assert } from '@ember/debug';
-import Easing from 'easing';
+import Easing from 'easing/browser-easing';
 import { task, timeout } from 'ember-concurrency';
 import config from 'ember-get-config';
 import window from 'ember-window-mock';
@@ -88,7 +88,12 @@ export default Service.extend({
     let scrollTo = this.getScrollTo(container);
     let viewportHeight = container.innerHeight || container.clientHeight || document.documentElement.clientHeight;
     let viewportWidth = container.innerWidth || container.clientWidth || document.documentElement.clientWidth;
-    let startX, startY, endX, endY, paddingX,  paddingY;
+    let startX;
+    let startY;
+    let endX;
+    let endY;
+    let paddingX;
+    let paddingY;
     if (options.padding) {
       assert('The padding option must have x and y properties', typeof options.padding.x !== 'undefined' && typeof options.padding.y !== 'undefined');
       paddingX = options.padding.x;
@@ -120,16 +125,16 @@ export default Service.extend({
     }
     assert(`"${options.type}" is not a valid easeType. It must be one of these options: ${easeTypes}`, easeTypes.indexOf(easeType) !== -1);
     // x and y easing variables
-    let index = 0,
-      delay = duration * 0.001,
-      steps = Math.ceil(duration * 0.1),
-      targetY = endY - startY - paddingY,
-      targetX = endX - startX - paddingX,
-      offsetY = startY,
-      offsetX = startX,
-      dirY = 1,
-      dirX = 1,
-      eases = Easing(steps, easeType);
+    let index = 0;
+    let delay = duration * 0.001;
+    let steps = Math.ceil(duration * 0.1);
+    let targetY = endY - startY - paddingY;
+    let targetX = endX - startX - paddingX;
+    let offsetY = startY;
+    let offsetX = startX;
+    let dirY = 1;
+    let dirX = 1;
+    let eases = Easing(steps, easeType);
 
     if (startY > endY) {
       targetY = startY - endY + paddingY;
