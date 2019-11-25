@@ -167,8 +167,8 @@ export default Service.extend({
   },
 
   getScrollTo(container) {
-    // if scrollTo is a function, it's most likely the window
-    if (typeof container.scrollTo === 'function') {
+    // Check if container is the window
+    if (container.self === window) {
       return container.scrollTo;
     // otherwise it's an element
     } else {
